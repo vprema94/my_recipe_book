@@ -12,6 +12,8 @@ class RecipesController < ApplicationController
 
   def create
     @recipe = Recipe.new(recipe_params)
+    # ingredients.each do |i|
+    @rec_ing = RecipeIngredient.find_or_create_by(recipe: recipe, ingredient: ingredient, amount: amount)
     if @recipe.save
       render json: @recipe, status: :created
     else
@@ -26,7 +28,7 @@ class RecipesController < ApplicationController
 
   private
   def recipe_params
-    params.permit(:name, :instructions, :user_id)
+    params.permit(:name, :instructions, :user_id, :ingredients_attributes)
   end
 
 end
