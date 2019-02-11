@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My Recipe Book</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"></script>
+  </head>
+
+  <body style='background-color:white'>
+
+    <!--  navbar-->
+    <div class="ui inverted orange menu">
+      <a class='item'>
+        <h2 class="ui header">
+          <i class="paw icon"></i>
+          <div class="content">
+            Recipes
+          </div>
+          <div class="sub header">
+            yum
+          </div>
+        </h2>
+      </a>
+    </div>
+
+
+    <div class='ui centered grid'>
+
+      <!-- form -->
+      <div class="row">
+        <div class='fourteen wide column'>
+          <form class="ui form">
+            <div class="three fields">
+
+              <div class="field">
+                <label>Recipe Name</label>
+                <input id='animal-nam' name="name" placeholder="Recipe" type="text">
+              </div>
+
+              <div class="field">
+                 <label>Instructions</label>
+                 <input id="animal-image" name="instructions" placeholder="Instructions" type="text-area">
+              </div>
+
+              <div>
+                <label> Add Ingredient </label>
+                <input id="ingredient" name="ingredient">
+              </div>
+            </div>
+            <button class="ui basic button" type="submit">Add Animal</button>
+          </form>
+        </div>
+      </div>
+
+      <!--  table -->
+      <!-- <div class="row">
+
+        <div class='one wide column'></div>
+
+        <div class = 'fourteen wide column'>
+          <table class="ui celled table">
+            <thead>
+              <tr>
+                <th>Animal Name</th>
+                <th>Gender</th>
+                <th>Species</th>
+              </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+          </table>
+        </div>
+
+        <div class='one wide column'></div>
+
+      </div> -->
+
+    </div>
+
+    <script src="index.js"></script>
+  </body>
+</html>
