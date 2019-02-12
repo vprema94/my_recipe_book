@@ -1,8 +1,7 @@
 document.addEventListener('DOMContentLoaded', setupPage);
 
 const BASE_URL = 'http://localhost:3000'
-let array = ['45367385', '11672', '45276886']
-const  API_KEY = '3EIKJr9x60u3tKEl9NOwreStlYavg2CcPmfcZ5ZS'
+const  API_KEY = ''
 const addRecipeBtn = document.querySelector('#new-recipe-btn')
 const recipeForm = document.querySelector('.add-recipe-form')
 const submitBtn = document.querySelector('.submit-button')
@@ -21,38 +20,6 @@ function setupPage() {
   addSearchHandler()
 }
 
-function renderRecipes() {
-  getRecipes().then(function(data) {
-    data.forEach(renderRecipe)
-  })
-}
-
-function getRecipes() {
-  return fetch(`${BASE_URL}/recipes`).then(res => res.json())
-}
-
-function renderRecipe(recipe) {
-  let element = document.createElement('div')
-  element.className = 'card'
-  element.dataset.id = recipe.id
-    let recipeName = document.createElement('h2')
-    recipeName.textContent = recipe.name
-    element.appendChild(recipeName)
-
-    let recipeIns = document.createElement('p')
-    recipeIns.textContent = recipe.instructions
-    element.appendChild(recipeIns)
-
-    // let recipeIng = document.createElement('p')
-    // element.appendChild(recipeIng)
-
-    let delbtn = document.createElement('button')
-    delbtn.className = 'delete-btn'
-    delbtn.textContent = "Delete"
-    // delbtn.addEventListener('click', deleteRecipe)
-    element.appendChild(delbtn)
-  recipeContainer.appendChild(element)
-}
 
 function addFormHandler() {
   addRecipeBtn.addEventListener('click', () => {
@@ -76,9 +43,7 @@ function submitForm() {
     amounts.push(amount)
   }
 
-//function that is wrapped in async
-//that calls this forEach
-  getAllIngredientInfo().then(postRecipe(name, instructions))
+  getAllIngredientInfo().then(() => postRecipe(name, instructions))
 
 }
 
@@ -89,11 +54,9 @@ function getAllIngredientInfo() {
     })
 }
 
-
-
 function postRecipe(name, instructions) {
   let recipe = {name: name, instructions: instructions, ingredients: ingredientParams}
-  console.log(recipe)
+  console.log(ingredientParams)
   fetch(BASE_URL + '/recipes', {
     method: 'POST',
     headers: {
@@ -102,6 +65,9 @@ function postRecipe(name, instructions) {
     },
     body: JSON.stringify({recipe})
   })
+  // ingredientNums = []
+  // ingredientParams = []
+  // amounts = []
 }
 
 function addSearchHandler() {
@@ -165,7 +131,6 @@ function renderItem(item) {
   ingredientNums.push(item.ndbno)
 }
 
-
 function getIngredientInfo(no) {
   ING_URL = `https://api.nal.usda.gov/ndb/V2/reports?ndbno=${no}&type=f&format=json&api_key=${API_KEY}`
   return fetch(ING_URL).then(res => res.json()).then(data => {
@@ -176,11 +141,44 @@ function getIngredientInfo(no) {
     let ingredientInfo = {name: name, ndbno: num, conv: conv}
     ingredientParams.push(ingredientInfo)
 
-  }).then(() => addAmounts(ingredientParams))
+  }).then(addAmounts)
 }
 
-function addAmounts(ingredientParams) {
+function addAmounts() {
   for (let i = 0; i<amounts.length; i++ ) {
     ingredientParams[i]['amount'] = amounts[i]
   }
+}
+
+function renderRecipes() {
+  getRecipes().then(function(data) {
+    data.forEach(renderRecipe)
+  })
+}
+
+function getRecipes() {
+  return fetch(`${BASE_URL}/recipes`).then(res => res.json())
+}
+
+function renderRecipe(recipe) {
+  let element = document.createElement('div')
+  element.className = 'card'
+  element.dataset.id = recipe.id
+    let recipeName = document.createElement('h2')
+    recipeName.textContent = recipe.name
+    element.appendChild(recipeName)
+
+    let recipeIns = document.createElement('p')
+    recipeIns.textContent = recipe.instructions
+    element.appendChild(recipeIns)
+
+    // let recipeIng = document.createElement('p')
+    // element.appendChild(recipeIng)
+
+    let delbtn = document.createElement('button')
+    delbtn.className = 'delete-btn'
+    delbtn.textContent = "Delete"
+    // delbtn.addEventListener('click', deleteRecipe)
+    element.appendChild(delbtn)
+  recipeContainer.appendChild(element)
 }
