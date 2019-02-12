@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 2019_02_11_184249) do
   create_table "ingredients", force: :cascade do |t|
     t.string "name"
     t.string "ndbno"
-    t.float "conv"
+    t.string "conv"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
