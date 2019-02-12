@@ -72,24 +72,24 @@ function submitForm() {
 }
 
 function addSearchHandler() {
-  searchIngBtn.addEventListener('click',ingredientSearch) 
+  searchIngBtn.addEventListener('click', ingredientSearch) 
 }
 
 function ingredientSearch() {
   let ingredient = event.target.parentElement.children[1].value
   let ING_SEARCH_URL = `https://api.nal.usda.gov/ndb/search/?format=json&q=${ingredient}&sort=n&offset=0&api_key=${API_KEY}`
-  // fetch(ING_SEARCH_URL).then(res => res.json()).then(data => renderResults(data.list.item))
-  debugger
-  fetch(ING_SEARCH_URL).then(res => res.json()).then(data => console.log(data))
+  fetch(ING_SEARCH_URL).then(res => res.json()).then(data => renderResults(data.list.item))
+  // fetch(ING_SEARCH_URL).then(res => res.json()).then(data => console.log(data))
 }
 
 function renderResults(results) {
+  debugger
   console.log(results)
   results.forEach(item => {
-    let name = document.createElement('p')
+    let searchResult = document.createElement('p')
     // add "add ingredient" pushes ingredient info into an array & renders ingredient name on page under a 'list'
-    name.textContent = item.name
-    resultsContainer.appendChild(name)
+    searchResult.textContent = item.name
+    resultsContainer.appendChild(searchResult)
     // submit form will call createIngredients() that takes in the array of ingredients and creates them
     // submit form will also call createRecipe() and creates recipe with name and instructions
   })
