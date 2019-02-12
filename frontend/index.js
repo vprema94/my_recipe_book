@@ -25,11 +25,11 @@ function renderRecipes() {
   getRecipes().then(function(data) {
     data.forEach(renderRecipe)
   })
-} 
+}
 
 function getRecipes() {
   return fetch(`${BASE_URL}/recipes`).then(res => res.json())
-} 
+}
 
 function renderRecipe(recipe) {
   let element = document.createElement('div')
@@ -37,16 +37,16 @@ function renderRecipe(recipe) {
   element.dataset.id = recipe.id
     let recipeName = document.createElement('h2')
     recipeName.textContent = recipe.name
-    element.appendChild(recipeName) 
+    element.appendChild(recipeName)
 
     let recipeIns = document.createElement('p')
     recipeIns.textContent = recipe.instructions
     element.appendChild(recipeIns)
 
     // let recipeIng = document.createElement('p')
-    // element.appendChild(recipeIng) 
+    // element.appendChild(recipeIng)
 
-    let delbtn = document.createElement('button') 
+    let delbtn = document.createElement('button')
     delbtn.className = 'delete-btn'
     delbtn.textContent = "Delete"
     // delbtn.addEventListener('click', deleteRecipe)
@@ -55,14 +55,14 @@ function renderRecipe(recipe) {
 }
 
 function addFormHandler() {
-  addRecipeBtn.addEventListener('click', () => { 
+  addRecipeBtn.addEventListener('click', () => {
     addRecipe = !addRecipe
     if (addRecipe) {
       recipeForm.style.display = 'block'
     } else {
       recipeForm.style.display = 'none'
     }
-  }) 
+  })
   recipeForm.addEventListener('submit', submitForm)
 }
 
@@ -76,11 +76,36 @@ function submitForm() {
     amounts.push(amount)
   }
 
-  ingredientNums.forEach(no => getIngredientInfo(no)) 
+//function that is wrapped in async
+//that calls this forEach
+  getAllIngredientInfo().then(postRecipe(name, instructions))
+
+}
+
+function getAllIngredientInfo() {
+    return new Promise(result => {
+      ingredientNums.forEach(no => getIngredientInfo(no))
+      result()
+    })
+}
+
+
+
+function postRecipe(name, instructions) {
+  let recipe = {name: name, instructions: instructions, ingredients: ingredientParams}
+  console.log(recipe)
+  fetch(BASE_URL + '/recipes', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json'
+    },
+    body: JSON.stringify({recipe})
+  })
 }
 
 function addSearchHandler() {
-  searchIngBtn.addEventListener('click', () => ingredientSearch(event.target.parentElement.children[1].value)) 
+  searchIngBtn.addEventListener('click', () => ingredientSearch(event.target.parentElement.children[1].value))
 }
 
 function ingredientSearch(ingredient) {
@@ -108,7 +133,7 @@ function renderResults(results) {
 function renderItem(item) {
   resultsContainer.innerHTML= ""
   let singleItem = document.createElement('p')
-  singleItem.textContent = item.name 
+  singleItem.textContent = item.name
     let amountInput = document.createElement('input')
     amountInput.placeholder = 'Enter Amount'
     singleItem.appendChild(amountInput)
@@ -123,12 +148,12 @@ function renderItem(item) {
       let tsp = document.createElement('option')
       tsp.value = 'tsp'
       tsp.textContent = 'teaspoon'
-      amountDrop.appendChild(tsp) 
+      amountDrop.appendChild(tsp)
 
       let cup = document.createElement('option')
       cup.value = 'cup'
       cup.textContent = 'cup(s)'
-      amountDrop.appendChild(cup) 
+      amountDrop.appendChild(cup)
 
       let gram = document.createElement('option')
       gram.value = 'gram'
@@ -136,7 +161,7 @@ function renderItem(item) {
       amountDrop.appendChild(gram)
 
     singleItem.appendChild(amountDrop)
-  itemContainer.appendChild(singleItem)  
+  itemContainer.appendChild(singleItem)
   ingredientNums.push(item.ndbno)
 }
 
@@ -146,16 +171,16 @@ function getIngredientInfo(no) {
   return fetch(ING_URL).then(res => res.json()).then(data => {
     let name = data.foods[0].food.desc.name
     let num = data.foods[0].food.desc.ndbno
-    let conv = (data.foods[0].food.nutrients[0].measures[0].eqv / data.foods[0].food.nutrients[0].measures[0].qty).toString() + `${data.foods[0].food.nutrients[0].measures[0].eunit}/${data.foods[0].food.nutrients[0].measures[0].label}` 
+    let conv = (data.foods[0].food.nutrients[0].measures[0].eqv / data.foods[0].food.nutrients[0].measures[0].qty).toString() + `${data.foods[0].food.nutrients[0].measures[0].eunit}/${data.foods[0].food.nutrients[0].measures[0].label}`
 
     let ingredientInfo = {name: name, ndbno: num, conv: conv}
-    ingredientParams.push(ingredientInfo) 
+    ingredientParams.push(ingredientInfo)
 
   }).then(() => addAmounts(ingredientParams))
 }
 
 function addAmounts(ingredientParams) {
   for (let i = 0; i<amounts.length; i++ ) {
-    ingredientParams[i]['amount'] = amounts[i]  
+    ingredientParams[i]['amount'] = amounts[i]
   }
 }

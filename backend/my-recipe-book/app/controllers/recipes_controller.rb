@@ -11,13 +11,16 @@ class RecipesController < ApplicationController
   end
 
   def create
-    @recipe = Recipe.new(recipe_params)
+    # byebug
+    paramh = recipe_params.to_h
+    @recipe = Recipe.new(name: paramh["name"], instructions: paramh["instructions"])
     # ingredients.each do |i|
-    @rec_ing = RecipeIngredient.find_or_create_by(recipe: recipe, ingredient: ingredient, amount: amount)
+    # @rec_ing = Rec_Ing.find_or_create_by(recipe: recipe, ingredient: ingredient, amount: amount)
     if @recipe.save
       render json: @recipe, status: :created
     else
       render json: @recipe.errors.full_messages, status: :unprocessable_entity
+    end
   end
 
   def update
@@ -28,7 +31,7 @@ class RecipesController < ApplicationController
 
   private
   def recipe_params
-    params.permit(:name, :instructions, :user_id, :ingredients_attributes)
+    params.require(:recipe).permit(:name, :instructions, :user_id, ingredients: [:name, :ndbno, :conv, :amount])
   end
 
 end

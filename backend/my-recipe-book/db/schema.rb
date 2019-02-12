@@ -16,13 +16,11 @@ ActiveRecord::Schema.define(version: 2019_02_11_184249) do
   enable_extension "plpgsql"
 
   create_table "comments", force: :cascade do |t|
-    t.bigint "user_id"
     t.bigint "recipe_id"
     t.string "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["recipe_id"], name: "index_comments_on_recipe_id"
-    t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
   create_table "ingredients", force: :cascade do |t|
@@ -46,21 +44,11 @@ ActiveRecord::Schema.define(version: 2019_02_11_184249) do
   create_table "recipes", force: :cascade do |t|
     t.string "name"
     t.string "instructions"
-    t.bigint "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_recipes_on_user_id"
-  end
-
-  create_table "users", force: :cascade do |t|
-    t.string "username"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   add_foreign_key "comments", "recipes"
-  add_foreign_key "comments", "users"
   add_foreign_key "rec_ings", "ingredients"
   add_foreign_key "rec_ings", "recipes"
-  add_foreign_key "recipes", "users"
 end

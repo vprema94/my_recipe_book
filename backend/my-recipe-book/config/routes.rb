@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
   resources :comments
-  resources :users
   resources :rec_ings
   resources :ingredients
   resources :recipes
