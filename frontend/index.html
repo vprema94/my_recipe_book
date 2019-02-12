@@ -2,8 +2,9 @@
 <html>
   <head>
     <title>My Recipe Book</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"></script>
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"></script> -->
+    <!-- <link rel="stylesheet" href="index.css"> -->
   </head>
 
   <body style='background-color:white'>
@@ -28,57 +29,42 @@
 
       <!-- form -->
       <div class="row">
-        <div class='fourteen wide column'>
-          <form class="ui form">
+        <div class='container'>
+          <form class="add-recipe-form">
             <div class="three fields">
 
               <div class="field">
                 <label>Recipe Name</label>
-                <input id='animal-nam' name="name" placeholder="Recipe" type="text">
+                <input id='recipe-name' name="name" placeholder="Recipe" type="text">
               </div>
 
               <div class="field">
                  <label>Instructions</label>
-                 <input id="animal-image" name="instructions" placeholder="Instructions" type="text-area">
+                 <input id="recipe-instructions" name="instructions" placeholder="Instructions" type="text-area">
               </div>
 
               <div>
                 <label> Add Ingredient </label>
                 <input id="ingredient" name="ingredient">
+                <button id="search">Search Ingredient</button>
               </div>
+
             </div>
-            <button class="ui basic button" type="submit">Add Animal</button>
+            <button class="ui basic button" type="submit">Create New Recipe</button>
           </form>
         </div>
       </div>
 
+    </div> 
 
-      <!--  table -->
-      <!-- <div class="row">
 
-        <div class='one wide column'></div>
+  </div>
 
-        <div class = 'fourteen wide column'>
-          <table class="ui celled table">
-            <thead>
-              <tr>
-                <th>Animal Name</th>
-                <th>Gender</th>
-                <th>Species</th>
-              </tr>
-            </thead>
-            <tbody>
+  <p style='text-align:center' >Click me to show form!<button id='new-recipe-btn'>Add a new recipe!</button></p>
 
-            </tbody>
-          </table>
-        </div>
+  <div id="recipe-collection">your recipes</div>
 
-        <div class='one wide column'></div>
-
-      </div> -->
-
-    </div>
-    <div id="results">ingredients</div>
+  <div id="results">ingredients</div>
 
     <script src="index.js"></script>
   </body>
