@@ -2,7 +2,8 @@ class RecipesController < ApplicationController
 
   def index
     @recipes = Recipe.all
-    render json: @recipes.to_json(include: :ingredients)
+    render json: @recipes.as_json(:include => {:rec_ings => {:include => :ingredient}})
+    # render json: tests.as_json(:include => {:questions => {:include => :subject}, :bonuses => {:include => :subject}})
   end
 
   def show
