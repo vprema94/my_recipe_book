@@ -1,7 +1,25 @@
+  button {
+    position: relative;
+    background-color: white;
+    border: none;
+    border-radius: 2px;
+    height: 2rem;
+    width: max-content;
+    color: black;
+    font-size: 20px;
+    justify-self: center;
+    font-family: 'Montserrat', sans-serif; 
+  } 
+
+  .header-container {
+    margin: 0;
+    font-size: 24px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold
+  } 
+  
   body {
     margin: 0;
-    font-family: monospace;
-    font-size: 20px
   } 
 
   #recipe-header {
@@ -11,7 +29,8 @@
     background: #efc2e1;
     opacity: .8;
     height: 7rem;
-    padding: 1rem;
+    padding: 2rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   } 
 
   #title {
@@ -25,65 +44,106 @@
     background: #c6ea7e;
     opacity: .8;
     display: flex;
-    align-items: center;
+    align-items: stretch;
+    justify-content: space-around; 
+    padding: 2rem;
+    flex-wrap: wrap
   } 
 
   .form-container {
-    width: 50%;
-
+    width: 45%;
   }
  
-  .selected-container {
-    width: 50%;
-
-  } 
-
-  /* .results-container {
-
-  } */
-
-  button {
-    position: relative;
-    background-color: #c6ea7e;
-    border: none;
-    border-radius: 2px;
-    height: 2rem;
-    width: max-content;
-    color: black;
-    font-size: 15px;
-    justify-self: center;
-  } 
-
-  #submit-button {
-    position: relative;
-    background-color: white;
-    border: none;
-    border-radius: 2px;
-    height: 2rem;
-    width: max-content;
-    color: black;
-    font-size: 15px;
-    justify-self: center;
-  } 
-
-  #search-button {
-    position: relative;
-    background-color: white;
-    border: none;
-    border-radius: 2px;
-    height: 2rem;
-    width: max-content;
-    color: black;
-    font-size: 15px;
-    justify-self: center;
+  .input-container {
+    padding: 1rem
   }
-
-
+  
   .input-text {
     border-radius: 2px;
     height: 2rem;
-    width: 40%;
-    font-size: 15px;
-    font-family: monospace;
+    width: 60%;
+    font-size: 18px;
+    font-family: 'Montserrat', sans-serif; 
     margin: 3px;
+  }
+
+  #recipe-instructions {
+    border-radius: 2px;
+    height: 10rem;
+    width: 60%;
+    font-size: 18px;
+    font-family: 'Montserrat', sans-serif; 
+    margin: 3px;
+  } 
+
+  .selected-container {
+    background-color: #def2b8;
+    width: 45%;
+    border: grey solid 1.33px;
+  } 
+
+  .results-container {
+    background-color: #def2b8;
+    padding: 2rem;
+    display: block;
+    border: grey solid 1.33px;
+  }
+
+  .recipes-body {
+    background-color: white;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column
+  }
+
+  .button-move {
+    display: flex;
+    justify-content: flex-end;
+    width: stretch;
+    padding-bottom: 1rem; 
+  }
+
+  #new-recipe-btn {
+    background-color: #efc2e1;
+    height: 4rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    font-family: 'Montserrat', sans-serif; 
+  }
+
+  #recipe-collection {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around 
+  } 
+
+  .card {
+    text-align: left;
+    padding: 1rem;
+    width: 30%;
+    height: 27rem;
+    display: flex;
+    flex-direction: column;
+    margin: 1rem;
+    background: #c6ea7e;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    font-family: 'Montserrat', sans-serif; 
+    font-size: 15px
+  } 
+
+  .recipe-card-name {
+    font-family: 'Parisienne', cursive;
+    font-size: 50px;
+    margin: 0; 
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 3px
+  } 
+
+  p {
+    margin: 0
+  }
+
+  .titlez {
+    font-weight: bold
   }

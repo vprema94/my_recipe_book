@@ -9,6 +9,7 @@ const submitBtn = document.querySelector('#submit-button')
 let addRecipe = false
 let recipeContainer = document.querySelector('#recipe-collection')
 let resultsContainer = document.querySelector('#results')
+let bigResultsContainer = document.querySelector('.results-container')
 let searchIngBtn = document.querySelector('#search-button')
 let itemContainer = document.querySelector('#item-container')
 let ingredientNums = []
@@ -26,8 +27,10 @@ function addFormHandler() {
     addRecipe = !addRecipe
     if (addRecipe) {
       recipeFormCont.style.display = 'flex'
+      bigResultsContainer.style.display = 'block'
     } else {
       recipeFormCont.style.display = 'none'
+      bigResultsContainer.style.display = 'none'
     }
   })
   recipeForm.addEventListener('submit', submitForm)
@@ -82,6 +85,8 @@ function postRecipe(name, instructions) {
   amounts = []
   recipeForm.reset()
   recipeFormCont.style.display = 'none'
+  bigResultsContainer.style.display = 'none'
+
 }
 
 function addSearchHandler() {
@@ -161,32 +166,45 @@ function renderRecipe(recipe) {
   let element = document.createElement('div')
   element.className = 'card'
   element.dataset.id = recipe.id
-    let recipeName = document.createElement('h2')
+    let recipeName = document.createElement('p')
+    recipeName.className = 'recipe-card-name'
     recipeName.textContent = recipe.name
     element.appendChild(recipeName)
+
+    let title2 = document.createElement('p')
+    title2.textContent = 'INGREDIENTS'
+    title2.className = 'titlez'
+    element.appendChild(title2) 
+
+    recipe.rec_ings.forEach((ing) => {
+      let ingCont = document.createElement('div')
+        let ingName = document.createElement('p')
+        ingName.textContent = ing.ingredient.name
+        ingCont.appendChild(ingName)
+
+        let ingAmt = document.createElement('p')
+        ingAmt.textContent = ing.amount
+        ingCont.appendChild(ingAmt)
+      element.appendChild(ingCont)
+    }) 
+
+    let title1 = document.createElement('p')
+    title1.textContent = 'INSTRUCTIONS'
+    title1.className = 'titlez'
+    element.appendChild(title1)
 
     let recipeIns = document.createElement('p')
     recipeIns.textContent = recipe.instructions
     element.appendChild(recipeIns)
 
-
-    console.log(recipe.rec_ings)
-    recipe.rec_ings.forEach((ing) => {
-      let ingName = document.createElement('p')
-      ingName.textContent = ing.ingredient.name
-      element.appendChild(ingName)
-
-      let ingAmt = document.createElement('p')
-      ingAmt.textContent = ing.amount
-      element.appendChild(ingAmt)
-    })
-
-    let delbtn = document.createElement('button')
-    delbtn.className = 'delete-btn'
-    delbtn.textContent = "Delete"
-    console.log(recipe)
-    delbtn.addEventListener('click', () => {deleteRecipe(recipe)})
-    element.appendChild(delbtn)
+    let btnCont = document.createElement('div')
+    btnCont.style.alignSelf = 'flex-end'
+      let delbtn = document.createElement('button')
+      delbtn.className = 'delete-btn'
+      delbtn.textContent = "Delete"
+      delbtn.addEventListener('click', () => {deleteRecipe(recipe)})
+      btnCont.appendChild(delbtn)
+    element.appendChild(btnCont)
   recipeContainer.appendChild(element)
 }
 
