@@ -2,7 +2,7 @@ class RecipesController < ApplicationController
 
   def index
     @recipes = Recipe.all
-    render json: @recipes
+    render json: @recipes.to_json(include: :ingredients)
   end
 
   def show
