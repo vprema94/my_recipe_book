@@ -1,68 +1,49 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>My Recipe Book</title>
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Parisienne" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+
+
   </head>
 
-  <body style='background-color:white'>
-
-    <!--  navbar-->
-    <div class="ui inverted orange menu">
-      <a class='item'>
-        <h2 class="ui header">
-          <i class="paw icon"></i>
-          <div class="content">
-            Recipes
-          </div>
-          <div class="sub header">
-            yum
-          </div>
-        </h2>
-      </a>
-    </div>
-
-
-    <div class='ui centered grid'>
-
-      <!-- form -->
-      <div class="row">
-        <div class='container'>
-          <form class="add-recipe-form">
-            <div class="three fields">
-
-              <div class="field">
-                <label>Recipe Name</label>
-                <input id='recipe-name' name="name" placeholder="Recipe" type="text">
-              </div>
-
-              <div class="field">
-                 <label>Instructions</label>
-                 <input id="recipe-instructions" name="instructions" placeholder="Instructions" type="text-area">
-              </div>
-
-              <div>
-                <label> Add Ingredient </label>
-                <input id="ingredient" name="ingredient">
-                <button id="search">Search Ingredient</button>
-              </div>
-
-            </div>
-            <button class="submit-button" type="submit">Create New Recipe</button>
-          </form>
-        </div>
-      </div>
-
+  <body>
+    <!----- header ---->
+    <div id='recipe-header'>
+      <h1 id='title'>My Recipe Book</h1>
     </div> 
 
-    <div id=item-container></div>
+    <!------ form ----->
+    <div class='container'>
+      <form class="add-recipe-form">
+          <h4>Add a New Recipe!</h4>
 
-  </div>
+          <label>Recipe Name</label>
+          <input type="text" id='recipe-name' name="name" placeholder="Recipe" type="text" class="input-text">
+          <br>
+          <label>Instructions</label>
+          <input id="recipe-instructions" name="instructions" placeholder="Instructions" type="text-area" class="input-text">
+          <br>
+          <label> Add Ingredient </label>
+          <input type="text" id="ingredient" name="ingredient" placeholder="Search Ingredients" class="input-text">
+          <button id="search-button">Search Ingredient</button>
+          <br>  
+          <button id="submit-button" type="submit">Create New Recipe</button>
+      </form>
+      <br>
+      <div id="results">Search Results</div>
+    </div>
 
-  <p style='text-align:center' >Click me to show form!<button id='new-recipe-btn'>Add a new recipe!</button></p>
+    <br>
+    <button id='new-recipe-btn'>Add a new recipe!</button>
 
-  <div id="recipe-collection">your recipes</div>
+    <div id=item-container>
+    </div>
 
-  <div id="results">ingredients</div>
+    <br>
+    <div id="recipe-collection">your recipes
+    </div>
 
     <script src="index.js"></script>
   </body>

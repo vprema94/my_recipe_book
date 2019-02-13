@@ -3,12 +3,13 @@ document.addEventListener('DOMContentLoaded', setupPage);
 const BASE_URL = 'http://localhost:3000'
 const  API_KEY = '3EIKJr9x60u3tKEl9NOwreStlYavg2CcPmfcZ5ZS'
 const addRecipeBtn = document.querySelector('#new-recipe-btn')
+const recipeFormCont = document.querySelector('.container')
 const recipeForm = document.querySelector('.add-recipe-form')
-const submitBtn = document.querySelector('.submit-button')
+const submitBtn = document.querySelector('#submit-button')
 let addRecipe = false
 let recipeContainer = document.querySelector('#recipe-collection')
 let resultsContainer = document.querySelector('#results')
-let searchIngBtn = document.querySelector('#search')
+let searchIngBtn = document.querySelector('#search-button')
 let itemContainer = document.querySelector('#item-container')
 let ingredientNums = []
 let ingredientParams = []
@@ -25,9 +26,9 @@ function addFormHandler() {
   addRecipeBtn.addEventListener('click', () => {
     addRecipe = !addRecipe
     if (addRecipe) {
-      recipeForm.style.display = 'block'
+      recipeFormCont.style.display = 'block'
     } else {
-      recipeForm.style.display = 'none'
+      recipeFormCont.style.display = 'none'
     }
   })
   recipeForm.addEventListener('submit', submitForm)
@@ -45,7 +46,7 @@ function submitForm() {
 
   // getAllIngredientInfo().then(() => addAmounts).then(() => postRecipe(name, instructions)) 
 
-  getAllIngredientInfo(name, instructions, amounts).then(() => postRecipe(name, instructions))
+  getAllIngredientInfo(name, instructions).then(() => postRecipe(name, instructions))
 
 }
 
@@ -63,13 +64,9 @@ async function getAllIngredientInfo(name, instructions) {
       let name = data.foods[0].food.desc.name
       let num = data.foods[0].food.desc.ndbno
       let conv = (data.foods[0].food.nutrients[0].measures[0].eqv / data.foods[0].food.nutrients[0].measures[0].qty).toString() + `${data.foods[0].food.nutrients[0].measures[0].eunit}/${data.foods[0].food.nutrients[0].measures[0].label}`
-      let ingredientInfo = {name: name, ndbno: num, conv: conv}
+      let ingredientInfo = {name: name, ndbno: num, conv: conv, amount: amounts.shift()}
 
       ingredientParams.push(ingredientInfo)
-
-      for (let i = 0; i<amounts.length; i++) {
-        ingredientParams[i]['amount'] = amounts[i]
-      } 
     }) 
   )
 } 
@@ -81,7 +78,7 @@ function getIngredientInfo(no) {
 
 function postRecipe(name, instructions) {
   let recipe = {name: name, instructions: instructions, ingredients: ingredientParams}
-  console.log(ingredientParams)
+  console.log(recipe)
   fetch(BASE_URL + '/recipes', {
     method: 'POST',
     headers: {
@@ -96,7 +93,7 @@ function postRecipe(name, instructions) {
 }
 
 function addSearchHandler() {
-  searchIngBtn.addEventListener('click', () => ingredientSearch(event.target.parentElement.children[1].value))
+  searchIngBtn.addEventListener('click', () => ingredientSearch(document.querySelector('#ingredient').value))
 }
 
 function ingredientSearch(ingredient) {

@@ -1,0 +1,53 @@
+  body {
+    margin: 0;
+    font-family: monospace;
+    font-size: 20px
+  } 
+
+  #recipe-header {
+    display: flex;
+    justify-content: center;
+    background: #efc2e1;
+    opacity: .8;
+    height: 7rem;
+    padding: 1rem;
+  } 
+
+  #title {
+    font-family: 'Parisienne', cursive;
+    font-size: 75px;
+  } 
+
+  .container {
+    padding: 1rem;
+    width: stretch;
+    height: auto;
+    background: #efc2e1;
+    opacity: .8;
+    display: none
+  }
+
+  button {
+    position: relative;
+    background-color: #c6ea7e;
+    border: none;
+    border-radius: 2px;
+    height: 2rem;
+    width: max-content;
+    color: black;
+    font-size: 15px;
+    justify-self: center;
+  }
+
+  .add-recipe-form {
+    width: 80%;
+  }
+
+  .input-text {
+    border-radius: 2px;
+    height: 2rem;
+    width: 40%;
+    font-size: 15px;
+    font-family: monospace;
+    margin: 3px;
+  }
