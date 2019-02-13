@@ -45,7 +45,7 @@ function submitForm() {
 
   // getAllIngredientInfo().then(() => addAmounts).then(() => postRecipe(name, instructions)) 
 
-  getAllIngredientInfo(name, instructions)
+  getAllIngredientInfo(name, instructions, amounts).then(() => postRecipe(name, instructions))
 
 }
 
@@ -57,31 +57,31 @@ function submitForm() {
 // } 
 
 async function getAllIngredientInfo(name, instructions) {
-  await ingredientNums.forEach(no => getIngredientInfo(no))
-  await addAmounts
-  await postRecipe(name, instructions)
+  Promise.all(
+    ingredientNums.map(async no => {
+      const data = await getIngredientInfo(no) 
+      let name = data.foods[0].food.desc.name
+      let num = data.foods[0].food.desc.ndbno
+      let conv = (data.foods[0].food.nutrients[0].measures[0].eqv / data.foods[0].food.nutrients[0].measures[0].qty).toString() + `${data.foods[0].food.nutrients[0].measures[0].eunit}/${data.foods[0].food.nutrients[0].measures[0].label}`
+      let ingredientInfo = {name: name, ndbno: num, conv: conv}
+
+      ingredientParams.push(ingredientInfo)
+
+      for (let i = 0; i<amounts.length; i++) {
+        ingredientParams[i]['amount'] = amounts[i]
+      } 
+    }) 
+  )
 } 
 
 function getIngredientInfo(no) {
   ING_URL = `https://api.nal.usda.gov/ndb/V2/reports?ndbno=${no}&type=f&format=json&api_key=${API_KEY}`
-  fetch(ING_URL).then(res => res.json()).then(data => {
-    let name = data.foods[0].food.desc.name
-    let num = data.foods[0].food.desc.ndbno
-    let conv = (data.foods[0].food.nutrients[0].measures[0].eqv / data.foods[0].food.nutrients[0].measures[0].qty).toString() + `${data.foods[0].food.nutrients[0].measures[0].eunit}/${data.foods[0].food.nutrients[0].measures[0].label}`
-
-    let ingredientInfo = {name: name, ndbno: num, conv: conv}
-    ingredientParams.push(ingredientInfo)
-  })
-}
-
-function addAmounts() {
-  for (let i = 0; i<amounts.length; i++ ) {
-    ingredientParams[i]['amount'] = amounts[i]
-  }
+  return fetch(ING_URL).then(res => res.json())
 }
 
 function postRecipe(name, instructions) {
   let recipe = {name: name, instructions: instructions, ingredients: ingredientParams}
+  console.log(ingredientParams)
   fetch(BASE_URL + '/recipes', {
     method: 'POST',
     headers: {
