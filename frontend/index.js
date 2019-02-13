@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', setupPage);
 
 const BASE_URL = 'http://localhost:3000'
-const  API_KEY = ''
+const  API_KEY = '3EIKJr9x60u3tKEl9NOwreStlYavg2CcPmfcZ5ZS'
 const addRecipeBtn = document.querySelector('#new-recipe-btn')
 const recipeForm = document.querySelector('.add-recipe-form')
 const submitBtn = document.querySelector('.submit-button')
@@ -11,7 +11,6 @@ let resultsContainer = document.querySelector('#results')
 let searchIngBtn = document.querySelector('#search')
 let itemContainer = document.querySelector('#item-container')
 let ingredientNums = []
-let ingredientParams = []
 let amounts = []
 
 function setupPage() {
@@ -37,26 +36,55 @@ function submitForm() {
   event.preventDefault()
   let name = event.target.name.value
   let instructions = event.target.instructions.value
+  let ingredientParams = []
 
   for (let j = 0; j<itemContainer.children.length; j++) {
     let amount = itemContainer.children[j].children[0].value + " " + itemContainer.children[j].children[1].value
     amounts.push(amount)
   }
 
-  getAllIngredientInfo().then(() => postRecipe(name, instructions))
+  // getAllIngredientInfo().then(() => addAmounts).then(() => postRecipe(name, instructions)) 
+
+  getAllIngredientInfo(name, instructions, ingredientParams)
 
 }
 
-function getAllIngredientInfo() {
-    return new Promise(result => {
-      ingredientNums.forEach(no => getIngredientInfo(no))
-      result()
-    })
+// function getAllIngredientInfo() {
+//     return new Promise(result => {
+//       ingredientNums.forEach(no => getIngredientInfo(no))
+//       result()
+//     })
+// } 
+
+async function getAllIngredientInfo(name, instructions, ingredientParams) {
+  await ingredientNums.forEach(no => getIngredientInfo(no, ingredientParams))
+  await addAmounts(ingredientParams)
+  await postRecipe(name, instructions, ingredientParams)
+} 
+
+function getIngredientInfo(no, ingredientParams) {
+  ING_URL = `https://api.nal.usda.gov/ndb/V2/reports?ndbno=${no}&type=f&format=json&api_key=${API_KEY}`
+  fetch(ING_URL).then(res => res.json()).then(data => {
+    let name = data.foods[0].food.desc.name
+    let num = data.foods[0].food.desc.ndbno
+    let conv = (data.foods[0].food.nutrients[0].measures[0].eqv / data.foods[0].food.nutrients[0].measures[0].qty).toString() + `${data.foods[0].food.nutrients[0].measures[0].eunit}/${data.foods[0].food.nutrients[0].measures[0].label}`
+
+    let ingredientInfo = {name: name, ndbno: num, conv: conv}
+    ingredientParams.push(ingredientInfo)
+  return ingredientParams
+  })
 }
 
-function postRecipe(name, instructions) {
-  let recipe = {name: name, instructions: instructions, ingredients: ingredientParams}
+function addAmounts(ingredientParams) {
   console.log(ingredientParams)
+  for (let i = 0; i<amounts.length; i++ ) {
+    ingredientParams[i]['amount'] = amounts[i]
+  }
+}
+
+function postRecipe(name, instructions, ingredientParams) {
+  let recipe = {name: name, instructions: instructions, ingredients: ingredientParams}
+  console.log('beforePost', ingredientParams)
   fetch(BASE_URL + '/recipes', {
     method: 'POST',
     headers: {
@@ -129,25 +157,6 @@ function renderItem(item) {
     singleItem.appendChild(amountDrop)
   itemContainer.appendChild(singleItem)
   ingredientNums.push(item.ndbno)
-}
-
-function getIngredientInfo(no) {
-  ING_URL = `https://api.nal.usda.gov/ndb/V2/reports?ndbno=${no}&type=f&format=json&api_key=${API_KEY}`
-  return fetch(ING_URL).then(res => res.json()).then(data => {
-    let name = data.foods[0].food.desc.name
-    let num = data.foods[0].food.desc.ndbno
-    let conv = (data.foods[0].food.nutrients[0].measures[0].eqv / data.foods[0].food.nutrients[0].measures[0].qty).toString() + `${data.foods[0].food.nutrients[0].measures[0].eunit}/${data.foods[0].food.nutrients[0].measures[0].label}`
-
-    let ingredientInfo = {name: name, ndbno: num, conv: conv}
-    ingredientParams.push(ingredientInfo)
-
-  }).then(addAmounts)
-}
-
-function addAmounts() {
-  for (let i = 0; i<amounts.length; i++ ) {
-    ingredientParams[i]['amount'] = amounts[i]
-  }
 }
 
 function renderRecipes() {
