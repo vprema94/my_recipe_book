@@ -26,7 +26,6 @@ class RecipesController < ApplicationController
       rec_ing = RecIng.last
       rec_ing.amount = ing['amount']
       rec_ing.save
-      byebug
     end
   end
 

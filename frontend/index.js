@@ -16,11 +16,10 @@ let ingredientParams = []
 let amounts = []
 
 function setupPage() {
-  // renderRecipes()
+  renderRecipes()
   addFormHandler()
   addSearchHandler()
 }
-
 
 function addFormHandler() {
   addRecipeBtn.addEventListener('click', () => {
@@ -43,42 +42,32 @@ function submitForm() {
     let amount = itemContainer.children[j].children[0].value + " " + itemContainer.children[j].children[1].value
     amounts.push(amount)
   }
-
-  // getAllIngredientInfo().then(() => addAmounts).then(() => postRecipe(name, instructions)) 
-
-  getAllIngredientInfo(name, instructions).then(() => postRecipe(name, instructions))
+  getAllIngredientInfo().then(() => postRecipe(name, instructions))
 
 }
 
-// function getAllIngredientInfo() {
-//     return new Promise(result => {
-//       ingredientNums.forEach(no => getIngredientInfo(no))
-//       result()
-//     })
-// } 
+function getAllIngredientInfo() {
+  queryString = ingredientNums.map((num) => {
+    return `ndbno=${num}`
+  })
+  
+  ING_URL = `https://api.nal.usda.gov/ndb/V2/reports?${queryString.join('&')}&type=f&format=json&api_key=${API_KEY}`
+  return fetch(ING_URL).then(res => res.json()).then((data) => getIngredientInfo(data))
+}
 
-async function getAllIngredientInfo(name, instructions) {
-  Promise.all(
-    ingredientNums.map(async no => {
-      const data = await getIngredientInfo(no) 
-      let name = data.foods[0].food.desc.name
-      let num = data.foods[0].food.desc.ndbno
-      let conv = (data.foods[0].food.nutrients[0].measures[0].eqv / data.foods[0].food.nutrients[0].measures[0].qty).toString() + `${data.foods[0].food.nutrients[0].measures[0].eunit}/${data.foods[0].food.nutrients[0].measures[0].label}`
+function getIngredientInfo(data) {
+    data.foods.forEach(ing => {
+      let name = ing.food.desc.name
+      let num = ing.food.desc.ndbno
+      let conv = (ing.food.nutrients[0].measures[0].eqv / ing.food.nutrients[0].measures[0].qty).toString() + `${ing.food.nutrients[0].measures[0].eunit}/${ing.food.nutrients[0].measures[0].label}`
       let ingredientInfo = {name: name, ndbno: num, conv: conv, amount: amounts.shift()}
-
       ingredientParams.push(ingredientInfo)
     }) 
-  )
 } 
-
-function getIngredientInfo(no) {
-  ING_URL = `https://api.nal.usda.gov/ndb/V2/reports?ndbno=${no}&type=f&format=json&api_key=${API_KEY}`
-  return fetch(ING_URL).then(res => res.json())
-}
 
 function postRecipe(name, instructions) {
   let recipe = {name: name, instructions: instructions, ingredients: ingredientParams}
-  console.log(recipe)
+
   fetch(BASE_URL + '/recipes', {
     method: 'POST',
     headers: {
@@ -87,9 +76,12 @@ function postRecipe(name, instructions) {
     },
     body: JSON.stringify({recipe})
   })
-  // ingredientNums = []
-  // ingredientParams = []
-  // amounts = []
+
+  ingredientNums = []
+  ingredientParams = []
+  amounts = []
+  recipeForm.reset() 
+  recipeFormCont.style.display = 'none'
 }
 
 function addSearchHandler() {
@@ -155,6 +147,7 @@ function renderItem(item) {
 
 function renderRecipes() {
   getRecipes().then(function(data) {
+    console.log(data)
     data.forEach(renderRecipe)
   })
 }
