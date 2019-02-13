@@ -177,7 +177,7 @@ function renderRecipe(recipe) {
       element.appendChild(ingName)
 
       let ingAmt = document.createElement('p')
-      ingAmt.textContent = ing.ingredient.name
+      ingAmt.textContent = ing.amount
       element.appendChild(ingAmt)
     })
 
