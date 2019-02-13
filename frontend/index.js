@@ -168,8 +168,17 @@ function renderRecipe(recipe) {
     recipeIns.textContent = recipe.instructions
     element.appendChild(recipeIns)
 
-    // let recipeIng = document.createElement('p')
-    // element.appendChild(recipeIng)
+
+    console.log(recipe.rec_ings)
+    recipe.rec_ings.forEach((ing) => {
+      let ingName = document.createElement('p')
+      ingName.textContent = ing.ingredient.name
+      element.appendChild(ingName)
+
+      let ingAmt = document.createElement('p')
+      ingAmt.textContent = ing.ingredient.name
+      element.appendChild(ingAmt)
+    })
 
     let delbtn = document.createElement('button')
     delbtn.className = 'delete-btn'
