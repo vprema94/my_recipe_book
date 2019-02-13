@@ -25,7 +25,7 @@ function addFormHandler() {
   addRecipeBtn.addEventListener('click', () => {
     addRecipe = !addRecipe
     if (addRecipe) {
-      recipeFormCont.style.display = 'block'
+      recipeFormCont.style.display = 'flex'
     } else {
       recipeFormCont.style.display = 'none'
     }

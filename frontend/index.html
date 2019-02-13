@@ -16,31 +16,35 @@
 
     <!------ form ----->
     <div class='container'>
-      <form class="add-recipe-form">
-          <h4>Add a New Recipe!</h4>
 
-          <label>Recipe Name</label>
-          <input type="text" id='recipe-name' name="name" placeholder="Recipe" type="text" class="input-text">
-          <br>
-          <label>Instructions</label>
-          <input id="recipe-instructions" name="instructions" placeholder="Instructions" type="text-area" class="input-text">
-          <br>
-          <label> Add Ingredient </label>
-          <input type="text" id="ingredient" name="ingredient" placeholder="Search Ingredients" class="input-text">
-          <button id="search-button">Search Ingredient</button>
-          <br>  
-          <button id="submit-button" type="submit">Create New Recipe</button>
-      </form>
-      <br>
-      <h4>Search Results</h4>
-      <div id="results">
-      </div> 
-      <br>
-      <h4>Ingredients Added</h4>
-      <div id=item-container>
+      <div class='form-container'>
+        <form class="add-recipe-form">
+            <h4>Add a New Recipe!</h4>
+
+            <label>Recipe Name</label>
+            <input type="text" id='recipe-name' name="name" placeholder="Recipe" type="text" class="input-text">
+            <br>
+            <label>Instructions</label>
+            <input id="recipe-instructions" name="instructions" placeholder="Instructions" type="text-area" class="input-text">
+            <br>
+            <label> Add Ingredient </label>
+            <input type="text" id="ingredient" name="ingredient" placeholder="Search Ingredients" class="input-text">
+            <button id="search-button">Search Ingredient</button>
+            <br>  
+            <button id="submit-button" type="submit">Create New Recipe</button>
+        </form>
+      </div>
+      
+      <div class='selected-container'>
+        <h4>Ingredients Added:</h4>
+        <div id=item-container></div>
       </div>
 
-
+      <div class='results-container'>
+        <h4>Search Results</h4>
+        <div id="results"></div> 
+      </div>
+  
     </div>
 
     <br>
