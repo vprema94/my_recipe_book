@@ -50,7 +50,7 @@ function getAllIngredientInfo() {
   queryString = ingredientNums.map((num) => {
     return `ndbno=${num}`
   })
-  
+
   ING_URL = `https://api.nal.usda.gov/ndb/V2/reports?${queryString.join('&')}&type=f&format=json&api_key=${API_KEY}`
   return fetch(ING_URL).then(res => res.json()).then((data) => getIngredientInfo(data))
 }
@@ -62,8 +62,8 @@ function getIngredientInfo(data) {
       let conv = (ing.food.nutrients[0].measures[0].eqv / ing.food.nutrients[0].measures[0].qty).toString() + `${ing.food.nutrients[0].measures[0].eunit}/${ing.food.nutrients[0].measures[0].label}`
       let ingredientInfo = {name: name, ndbno: num, conv: conv, amount: amounts.shift()}
       ingredientParams.push(ingredientInfo)
-    }) 
-} 
+    })
+}
 
 function postRecipe(name, instructions) {
   let recipe = {name: name, instructions: instructions, ingredients: ingredientParams}
@@ -75,12 +75,12 @@ function postRecipe(name, instructions) {
       Accept: 'application/json'
     },
     body: JSON.stringify({recipe})
-  })
+  }).then(() => renderRecipes())
 
   ingredientNums = []
   ingredientParams = []
   amounts = []
-  recipeForm.reset() 
+  recipeForm.reset()
   recipeFormCont.style.display = 'none'
 }
 
@@ -146,6 +146,7 @@ function renderItem(item) {
 }
 
 function renderRecipes() {
+  recipeContainer.innerHTML = ''
   getRecipes().then(function(data) {
     console.log(data)
     data.forEach(renderRecipe)
@@ -174,7 +175,16 @@ function renderRecipe(recipe) {
     let delbtn = document.createElement('button')
     delbtn.className = 'delete-btn'
     delbtn.textContent = "Delete"
-    // delbtn.addEventListener('click', deleteRecipe)
+    console.log(recipe)
+    delbtn.addEventListener('click', () => {deleteRecipe(recipe)})
     element.appendChild(delbtn)
   recipeContainer.appendChild(element)
 }
+
+function deleteRecipe(recipe) {
+  fetch(`${BASE_URL}/recipes/${recipe.id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'}
+    }).then(() => renderRecipes())
+  }
