@@ -11,6 +11,7 @@ let resultsContainer = document.querySelector('#results')
 let searchIngBtn = document.querySelector('#search')
 let itemContainer = document.querySelector('#item-container')
 let ingredientNums = []
+let ingredientParams = []
 let amounts = []
 
 function setupPage() {
@@ -36,7 +37,6 @@ function submitForm() {
   event.preventDefault()
   let name = event.target.name.value
   let instructions = event.target.instructions.value
-  let ingredientParams = []
 
   for (let j = 0; j<itemContainer.children.length; j++) {
     let amount = itemContainer.children[j].children[0].value + " " + itemContainer.children[j].children[1].value
@@ -45,7 +45,7 @@ function submitForm() {
 
   // getAllIngredientInfo().then(() => addAmounts).then(() => postRecipe(name, instructions)) 
 
-  getAllIngredientInfo(name, instructions, ingredientParams)
+  getAllIngredientInfo(name, instructions)
 
 }
 
@@ -56,13 +56,13 @@ function submitForm() {
 //     })
 // } 
 
-async function getAllIngredientInfo(name, instructions, ingredientParams) {
-  await ingredientNums.forEach(no => getIngredientInfo(no, ingredientParams))
-  await addAmounts(ingredientParams)
-  await postRecipe(name, instructions, ingredientParams)
+async function getAllIngredientInfo(name, instructions) {
+  await ingredientNums.forEach(no => getIngredientInfo(no))
+  await addAmounts
+  await postRecipe(name, instructions)
 } 
 
-function getIngredientInfo(no, ingredientParams) {
+function getIngredientInfo(no) {
   ING_URL = `https://api.nal.usda.gov/ndb/V2/reports?ndbno=${no}&type=f&format=json&api_key=${API_KEY}`
   fetch(ING_URL).then(res => res.json()).then(data => {
     let name = data.foods[0].food.desc.name
@@ -71,20 +71,17 @@ function getIngredientInfo(no, ingredientParams) {
 
     let ingredientInfo = {name: name, ndbno: num, conv: conv}
     ingredientParams.push(ingredientInfo)
-  return ingredientParams
   })
 }
 
-function addAmounts(ingredientParams) {
-  console.log(ingredientParams)
+function addAmounts() {
   for (let i = 0; i<amounts.length; i++ ) {
     ingredientParams[i]['amount'] = amounts[i]
   }
 }
 
-function postRecipe(name, instructions, ingredientParams) {
+function postRecipe(name, instructions) {
   let recipe = {name: name, instructions: instructions, ingredients: ingredientParams}
-  console.log('beforePost', ingredientParams)
   fetch(BASE_URL + '/recipes', {
     method: 'POST',
     headers: {
