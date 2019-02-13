@@ -33,7 +33,11 @@ class RecipesController < ApplicationController
   def update
   end
 
-  def delete
+  def destroy
+    # byebug
+    rec = Recipe.find(params[:id])
+    rec.rec_ings.destroy_all
+    rec.destroy
   end
 
   private
