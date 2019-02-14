@@ -86,7 +86,7 @@ function postRecipe(name, instructions) {
   recipeForm.reset()
   recipeFormCont.style.display = 'none'
   bigResultsContainer.style.display = 'none'
-
+  resultsContainer.innerHTML= ""
 }
 
 function addSearchHandler() {
@@ -103,15 +103,14 @@ function renderResults(results) {
   resultsContainer.innerHTML = ""
   results.forEach(item => {
     let searchResult = document.createElement('p')
-    // add "add ingredient" pushes ingredient info into an array & renders ingredient name on page under a 'list'
+    searchResult.className = 'search-result'
     searchResult.textContent = item.name
       let ingBtn = document.createElement('button')
-      ingBtn.textContent = "Add Me to Your Recipe!"
+      ingBtn.className = 'search-result-btn'
+      ingBtn.textContent = "Add to Recipe"
       ingBtn.addEventListener('click', () => renderItem(item))
       searchResult.appendChild(ingBtn)
     resultsContainer.appendChild(searchResult)
-    // submit form will call createIngredients() that takes in the array of ingredients and creates them
-    // submit form will also call createRecipe() and creates recipe with name and instructions
   })
 }
 
