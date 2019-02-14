@@ -126,7 +126,7 @@
     text-align: left;
     padding: 1rem;
     width: 45%;
-    height: 30rem;
+    min-height: 30rem;
     display: flex;
     flex-direction: column;
     margin: 1rem;
@@ -169,4 +169,14 @@
   position: relative;
   height: 1.5rem;
   font-size: 15px;
+} 
+
+.ing-cont {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+} 
+
+.ing-line {
+  display: flex;
 }

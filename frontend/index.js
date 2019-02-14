@@ -15,6 +15,7 @@ let itemContainer = document.querySelector('#item-container')
 let ingredientNums = []
 let ingredientParams = []
 let amounts = []
+let allRecipes = []
 
 function setupPage() {
   renderRecipes()
@@ -91,19 +92,20 @@ function postRecipe(name, instructions) {
 
 function addSearchHandler() {
   searchIngBtn.addEventListener('click', () => ingredientSearch(document.querySelector('#ingredient').value))
-  // // live recipe filter incoming
-  // recipeFilter = document.createElement('input')
-  // recipeFilter.addEventListener('keyup', ()=>{
-  //   // console.log(event.target.value)
-  //   searchTerm = event.target.value
-  //   const re = new RegExp(searchTerm, 'i', '^[ ,-]')
-  //   console.log(re)
-  //   const results = POKEMON.filter((p) => {
-  //     return re.test(p)
-  //   })
-  // })
-  // recipeContainer.appendChild(recipeFilter)
-  /////////////////////////////
+   // // live recipe filter incoming
+  recipeFilter = document.querySelector('#recipe-search-form')
+  recipeFilter.addEventListener('input', ()=>{
+    searchTerm = event.target.value
+    const re = new RegExp(searchTerm, 'i', '^[ ,-]')
+    console.log(re)
+    const results = allRecipes.filter((p) => {
+      return re.test(p.name)
+    }) 
+    results.forEach((recipe) => {
+      renderRecipe(recipe)
+    })
+
+  })
 }
 
 function ingredientSearch(ingredient) {
@@ -198,19 +200,23 @@ function renderRecipe(recipe) {
     title2.className = 'titlez'
     element.appendChild(title2)
 
+    let ingCont = document.createElement('div')
+    ingCont.className = 'ing-cont'
     recipe.rec_ings.forEach((ing) => {
-      let ingCont = document.createElement('div')
-        let ingName = document.createElement('p')
-        ingName.textContent = ing.ingredient.name
-        ingCont.appendChild(ingName)
+        let ingLine = document.createElement('span')
+        ingLine.className = 'ing-line'
+          let ingAmt = document.createElement('p')
+          ingAmt.className = "ingredient-amount"
+          ingAmt.textContent = ing.amount
+          ingLine.appendChild(ingAmt)
 
-        let ingAmt = document.createElement('p')
-        ingAmt.className = "ingredient-amount"
-        ingAmt.textContent = ing.amount
-        ingCont.appendChild(ingAmt)
-      element.appendChild(ingCont)
+          let ingName = document.createElement('p')
+          ingName.textContent = ing.ingredient.name
+          ingLine.appendChild(ingName)
+        ingCont.appendChild(ingLine)
     })
-
+    element.appendChild(ingCont)
+    
     let title1 = document.createElement('p')
     title1.textContent = 'INSTRUCTIONS'
     title1.className = 'titlez'
@@ -234,6 +240,7 @@ function renderRecipe(recipe) {
     convBtn.addEventListener('click', () => {convertUnits(recipe)})
     btnCont.appendChild(convBtn)
   recipeContainer.appendChild(element)
+  allRecipes.push(recipe)
 }
 
 function deleteRecipe(recipe) {
@@ -249,9 +256,10 @@ function deleteRecipe(recipe) {
     unitConv = {'cup': {'fl oz': 8, 'mL': 236.6},
                 'mL': {'cup': (1/236.6), 'fl oz': (1/29.6)},
                 'fl oz': {'cup': (1/8), 'mL': 29.6}}
+    let i = 0
     recipe.rec_ings.forEach((ing) => {
-      if (event.target.parentElement.parentElement.querySelector('.ingredient-amount').textContent !== ing.amount) {
-        event.target.parentElement.parentElement.querySelector('.ingredient-amount').textContent = ing.amount
+      if (event.target.parentElement.parentElement.querySelectorAll('.ingredient-amount').item(i).textContent !== ing.amount) {
+        event.target.parentElement.parentElement.querySelectorAll('.ingredient-amount').item(i).textContent = ing.amount
       } else {
         amt_value = parseInt(ing.amount.split(' ')[0])
         amt_unit = ing.amount.split(' ')[1]
@@ -260,17 +268,18 @@ function deleteRecipe(recipe) {
         targetUnit = conv.split('/')[1]
         if (amt_unit === 'g') {
           //use conv to get to target units
-          let newUnit = amt_value/parseInt(gPerUnit)
-          event.target.parentElement.parentElement.querySelector('.ingredient-amount').textContent = `${newUnit} ${targetUnit}`
+          let newUnit = (amt_value/parseInt(gPerUnit)).toFixed(2)
+          event.target.parentElement.parentElement.querySelectorAll('.ingredient-amount').item(i).textContent = `${newUnit} ${targetUnit}`
         } else if (amt_unit === targetUnit) {
           let newUnit = amt_value * parseInt(gPerUnit)
-          event.target.parentElement.parentElement.querySelector('.ingredient-amount').textContent = `${newUnit} ${targetUnit}`
+          event.target.parentElement.parentElement.querySelectorAll('.ingredient-amount').item(i).textContent = `${newUnit} g`
         } else if (units.indexOf(amt_unit) > -1 && units.indexOf(targetUnit) > -1) {
           let newUnit = amt_value * unitConv[amt_unit][targetUnit]
-          event.target.parentElement.parentElement.querySelector('.ingredient-amount').textContent = `${newUnit} g`
+          event.target.parentElement.parentElement.querySelectorAll('.ingredient-amount').item(i).textContent = `${newUnit} g`
         }
       }
-      })
-    }
+      i++
+    })
+  }
     // debugger
     // console.log(recipe)
