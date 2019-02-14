@@ -124,36 +124,42 @@ function ingredientSearch(ingredient) {
 function renderResults(results) {
   resultsContainer.innerHTML = ""
   results.forEach(item => {
-    let searchResult = document.createElement('p')
-    searchResult.className = 'search-result'
-    searchResult.textContent = item.name
+    let spanBtn = document.createElement('div')
+    spanBtn.className = 'span-btn'
       let ingBtn = document.createElement('button')
       ingBtn.className = 'search-result-btn'
       ingBtn.textContent = "Add to Recipe"
       ingBtn.addEventListener('click', () => renderItem(item))
-      searchResult.appendChild(ingBtn)
-    resultsContainer.appendChild(searchResult)
+      spanBtn.appendChild(ingBtn)
+      let searchResult = document.createElement('p')
+      searchResult.className = 'search-result'
+      searchResult.textContent = (item.name).split(",").shift().toLowerCase().replace(/\b\w/g, l => l.toUpperCase())
+      spanBtn.appendChild(searchResult)
+    resultsContainer.appendChild(spanBtn)
   })
 }
 
 function renderItem(item) {
   resultsContainer.innerHTML= ""
-  let singleItem = document.createElement('p')
-  singleItem.textContent = item.name
+  let singleItem = document.createElement('li')
+  singleItem.className = 'single-item'
+  singleItem.textContent = (item.name).split(",").shift().toLowerCase().replace(/\b\w/g, l => l.toUpperCase())
     let amountInput = document.createElement('input')
     amountInput.placeholder = 'Enter Amount'
+    amountInput.className = 'amount-input'
     singleItem.appendChild(amountInput)
 
     let amountDrop = document.createElement('select')
     amountDrop.name = 'measurements'
+    amountDrop.className = 'amount-input'
       let tbsp = document.createElement('option')
       tbsp.value = 'tbsp'
-      tbsp.textContent = 'tablespoon'
+      tbsp.textContent = 'tablespoon(s)'
       amountDrop.appendChild(tbsp)
 
       let tsp = document.createElement('option')
       tsp.value = 'tsp'
-      tsp.textContent = 'teaspoon'
+      tsp.textContent = 'teaspoon(s)'
       amountDrop.appendChild(tsp)
 
       let cup = document.createElement('option')

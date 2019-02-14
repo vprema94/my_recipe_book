@@ -48,7 +48,7 @@
     height: auto;
     background: #c6ea7e;
     opacity: .8;
-    display: flex;
+    display: none;
     align-items: stretch;
     justify-content: space-around; 
     padding: 2rem;
@@ -72,6 +72,15 @@
     margin: 3px;
   }
 
+  .amount-input {
+    border-radius: 2px;
+    height: 2rem;
+    font-size: 15px;
+    font-family: 'Montserrat', sans-serif; 
+    margin-left: 0.5rem;
+    margin-top: 0.5rem
+  }
+
   #recipe-instructions {
     border-radius: 2px;
     height: 10rem;
@@ -79,21 +88,25 @@
     font-size: 18px;
     font-family: 'Montserrat', sans-serif; 
     margin: 3px;
+    padding-left:0;
+    padding-top:0;
   } 
 
   .selected-container {
     background-color: #def2b8;
-    width: 45%;
+    min-width: 45%;
     border: grey solid 1.33px;
+    font-family: 'Montserrat', sans-serif; 
+    font-size: 17px;
   } 
 
   .results-container {
     background-color: #def2b8;
     padding: 2rem;
-    display: block;
+    display: none;
     border: grey solid 1.33px;
     line-height: 2;
-  }
+  } 
 
   .recipes-body {
     background-color: white;
@@ -169,6 +182,7 @@
   position: relative;
   height: 1.5rem;
   font-size: 15px;
+  margin-right: 0.5rem
 } 
 
 .ing-cont {
@@ -191,4 +205,16 @@
   font-size: 2rem;
   border: 10px solid grey solid;
   font-family: 'Montserrat', sans-serif; 
+  text-align: center
+} 
+
+.span-btn {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center
+} 
+
+.single-item {
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
