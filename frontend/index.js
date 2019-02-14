@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', setupPage);
 
 const BASE_URL = 'http://localhost:3000'
-const  API_KEY = '3EIKJr9x60u3tKEl9NOwreStlYavg2CcPmfcZ5ZS'
+const API_KEY = '3EIKJr9x60u3tKEl9NOwreStlYavg2CcPmfcZ5ZS'
 const addRecipeBtn = document.querySelector('#new-recipe-btn')
 const recipeFormCont = document.querySelector('.container')
 const recipeForm = document.querySelector('.add-recipe-form')
