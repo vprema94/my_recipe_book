@@ -86,11 +86,24 @@ function postRecipe(name, instructions) {
 
 function addSearchHandler() {
   searchIngBtn.addEventListener('click', () => ingredientSearch(document.querySelector('#ingredient').value))
+  // // live recipe filter incoming
+  // recipeFilter = document.createElement('input')
+  // recipeFilter.addEventListener('keyup', ()=>{
+  //   // console.log(event.target.value)
+  //   searchTerm = event.target.value
+  //   const re = new RegExp(searchTerm, 'i', '^[ ,-]')
+  //   console.log(re)
+  //   const results = POKEMON.filter((p) => {
+  //     return re.test(p)
+  //   })
+  // })
+  // recipeContainer.appendChild(recipeFilter)
+  /////////////////////////////
 }
 
 function ingredientSearch(ingredient) {
   event.preventDefault()
-  const ING_SEARCH_URL = `https://api.nal.usda.gov/ndb/search/?format=json&q=${ingredient}&sort=n&offset=0&api_key=${API_KEY}`
+  const ING_SEARCH_URL = `https://api.nal.usda.gov/ndb/search/?format=json&q=${ingredient}&sort=r&offset=0&api_key=${API_KEY}`
   fetch(ING_SEARCH_URL).then(res => res.json()).then(data => renderResults(data.list.item))
 }
 
