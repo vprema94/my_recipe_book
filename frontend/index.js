@@ -153,9 +153,19 @@ function renderItem(item) {
       amountDrop.appendChild(cup)
 
       let gram = document.createElement('option')
-      gram.value = 'gram'
+      gram.value = 'g'
       gram.textContent = 'gram(s)'
       amountDrop.appendChild(gram)
+
+      let mL = document.createElement('option')
+      mL.value = 'mL'
+      mL.textContent = 'mL(s)'
+      amountDrop.appendChild(mL)
+
+      let fl_oz = document.createElement('option')
+      fl_oz.value = 'fl oz'
+      fl_oz.textContent = 'fl oz(s)'
+      amountDrop.appendChild(fl_oz)
 
     singleItem.appendChild(amountDrop)
   itemContainer.appendChild(singleItem)
@@ -186,7 +196,7 @@ function renderRecipe(recipe) {
     let title2 = document.createElement('p')
     title2.textContent = 'INGREDIENTS'
     title2.className = 'titlez'
-    element.appendChild(title2) 
+    element.appendChild(title2)
 
     recipe.rec_ings.forEach((ing) => {
       let ingCont = document.createElement('div')
@@ -195,10 +205,11 @@ function renderRecipe(recipe) {
         ingCont.appendChild(ingName)
 
         let ingAmt = document.createElement('p')
+        ingAmt.className = "ingredient-amount"
         ingAmt.textContent = ing.amount
         ingCont.appendChild(ingAmt)
       element.appendChild(ingCont)
-    }) 
+    })
 
     let title1 = document.createElement('p')
     title1.textContent = 'INSTRUCTIONS'
@@ -217,6 +228,11 @@ function renderRecipe(recipe) {
       delbtn.addEventListener('click', () => {deleteRecipe(recipe)})
       btnCont.appendChild(delbtn)
     element.appendChild(btnCont)
+    let convBtn = document.createElement('button')
+    convBtn.textContent = 'Convert units'
+    convBtn.className = 'delete-btn'
+    convBtn.addEventListener('click', () => {convertUnits(recipe)})
+    btnCont.appendChild(convBtn)
   recipeContainer.appendChild(element)
 }
 
@@ -227,3 +243,34 @@ function deleteRecipe(recipe) {
       'Content-Type': 'application/json'}
     }).then(() => renderRecipes())
   }
+
+  function convertUnits(recipe) {
+    units = ['fl oz', 'cup', 'mL', 'oz', 'g']
+    unitConv = {'cup': {'fl oz': 8, 'mL': 236.6},
+                'mL': {'cup': (1/236.6), 'fl oz': (1/29.6)},
+                'fl oz': {'cup': (1/8), 'mL': 29.6}}
+    recipe.rec_ings.forEach((ing) => {
+      if (event.target.parentElement.parentElement.querySelector('.ingredient-amount').textContent !== ing.amount) {
+        event.target.parentElement.parentElement.querySelector('.ingredient-amount').textContent = ing.amount
+      } else {
+        amt_value = parseInt(ing.amount.split(' ')[0])
+        amt_unit = ing.amount.split(' ')[1]
+        conv = ing.ingredient.conv
+        gPerUnit = conv.split('/')[0]
+        targetUnit = conv.split('/')[1]
+        if (amt_unit === 'g') {
+          //use conv to get to target units
+          let newUnit = amt_value/parseInt(gPerUnit)
+          event.target.parentElement.parentElement.querySelector('.ingredient-amount').textContent = `${newUnit} ${targetUnit}`
+        } else if (amt_unit === targetUnit) {
+          let newUnit = amt_value * parseInt(gPerUnit)
+          event.target.parentElement.parentElement.querySelector('.ingredient-amount').textContent = `${newUnit} ${targetUnit}`
+        } else if (units.indexOf(amt_unit) > -1 && units.indexOf(targetUnit) > -1) {
+          let newUnit = amt_value * unitConv[amt_unit][targetUnit]
+          event.target.parentElement.parentElement.querySelector('.ingredient-amount').textContent = `${newUnit} g`
+        }
+      }
+      })
+    }
+    // debugger
+    // console.log(recipe)
