@@ -88,19 +88,26 @@ function postRecipe(name, instructions) {
   recipeFormCont.style.display = 'none'
   bigResultsContainer.style.display = 'none'
   resultsContainer.innerHTML= ""
+  allRecipes.push(recipe)
 }
 
 function addSearchHandler() {
   searchIngBtn.addEventListener('click', () => ingredientSearch(document.querySelector('#ingredient').value))
    // // live recipe filter incoming
+   // let recipeContainer = document.querySelector('#recipe-collection')
   recipeFilter = document.querySelector('#recipe-search-form')
-  recipeFilter.addEventListener('input', ()=>{
+  recipeFilter.addEventListener('keyup', ()=>{
+    while (recipeContainer.firstChild) {
+      recipeContainer.removeChild(recipeContainer.firstChild);
+    }
+    // recipeContainer.innerHTML = ''
     searchTerm = event.target.value
     const re = new RegExp(searchTerm, 'i', '^[ ,-]')
     console.log(re)
     const results = allRecipes.filter((p) => {
       return re.test(p.name)
-    }) 
+    })
+    // debugger
     results.forEach((recipe) => {
       renderRecipe(recipe)
     })
@@ -177,6 +184,7 @@ function renderItem(item) {
 function renderRecipes() {
   recipeContainer.innerHTML = ''
   getRecipes().then(function(data) {
+    data.forEach((recipe) => {allRecipes.push(recipe)})
     console.log(data)
     data.forEach(renderRecipe)
   })
@@ -216,7 +224,7 @@ function renderRecipe(recipe) {
         ingCont.appendChild(ingLine)
     })
     element.appendChild(ingCont)
-    
+
     let title1 = document.createElement('p')
     title1.textContent = 'INSTRUCTIONS'
     title1.className = 'titlez'
@@ -240,7 +248,6 @@ function renderRecipe(recipe) {
     convBtn.addEventListener('click', () => {convertUnits(recipe)})
     btnCont.appendChild(convBtn)
   recipeContainer.appendChild(element)
-  allRecipes.push(recipe)
 }
 
 function deleteRecipe(recipe) {
