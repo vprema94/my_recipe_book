@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <link href="https://fonts.googleapis.com/css?family=Parisienne" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:500,700|Parisienne" rel="stylesheet">
     <link rel="stylesheet" href="index.css">
 
 
@@ -16,40 +16,43 @@
 
     <!------ form ----->
     <div class='container'>
-      <form class="add-recipe-form">
-          <h4>Add a New Recipe!</h4>
 
-          <label>Recipe Name</label>
-          <input type="text" id='recipe-name' name="name" placeholder="Recipe" type="text" class="input-text">
-          <br>
-          <label>Instructions</label>
-          <input id="recipe-instructions" name="instructions" placeholder="Instructions" type="text-area" class="input-text">
-          <br>
-          <label> Add Ingredient </label>
-          <input type="text" id="ingredient" name="ingredient" placeholder="Search Ingredients" class="input-text">
-          <button id="search-button">Search Ingredient</button>
-          <br>  
-          <button id="submit-button" type="submit">Create New Recipe</button>
-      </form>
-      <br>
-      <h4>Search Results</h4>
-      <div id="results">
-      </div> 
-      <br>
-      <h4>Ingredients Added</h4>
-      <div id=item-container>
+      <div class='form-container'>
+        <form class="add-recipe-form">
+            <p class='header-container'>Fill Out Form Below</p>
+            <div class='input-container'>
+              <input id='recipe-name' name="name" placeholder="Recipe" type="text" class="input-text">
+              <br>
+              <input id="recipe-instructions" name="instructions" placeholder="Instructions" type="text-area" class="input-text">
+              <br>
+              <input type="text" id="ingredient" name="ingredient" placeholder="Search Ingredients" class="input-text">
+              <button id="search-button">SEARCH</button>
+              <br>  
+            </div>
+            <button id="submit-button" type="submit">SUBMIT</button>
+        </form>
       </div>
-
+      
+      <div class='selected-container'>
+        <p class='header-container'>Ingredients Added:</p>
+        <div id=item-container></div>
+      </div>
 
     </div>
 
-    <br>
-    <button id='new-recipe-btn'>Add a new recipe!</button>
+    <!------ results -------->
+    <div class='results-container'>
+        <p class='header-container'>Search Results</p>
+        <div id="results"></div> 
+    </div>
 
- 
+    <!----- recipe body ----->
+    <div class='recipes-body'>
+      <div class='button-move'>
+        <button id='new-recipe-btn'>ADD NEW RECIPE</button>
+      </div>
 
-    <br>
-    <div id="recipe-collection">your recipes
+      <div id="recipe-collection"></div>
     </div>
 
     <script src="index.js"></script>
