@@ -179,4 +179,16 @@
 
 .ing-line {
   display: flex;
+} 
+
+#recipe-search-form {
+  width: 500px;
+  margin: auto;
+  margin-top: 50px;
+}
+
+#recipe-search-input {
+  font-size: 2rem;
+  border: 10px solid grey solid;
+  font-family: 'Montserrat', sans-serif; 
 }
