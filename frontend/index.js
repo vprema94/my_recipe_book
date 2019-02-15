@@ -29,6 +29,7 @@ function addFormHandler() {
     if (addRecipe) {
       recipeFormCont.style.display = 'flex'
       bigResultsContainer.style.display = 'block'
+      addRecipeBtn.style.display = 'none'
     } else {
       recipeFormCont.style.display = 'none'
       bigResultsContainer.style.display = 'none'
@@ -39,6 +40,7 @@ function addFormHandler() {
 
 function submitForm() {
   event.preventDefault()
+  addRecipeBtn.style.display = 'block'
   let name = event.target.name.value
   let instructions = event.target.instructions.value
 
@@ -88,6 +90,7 @@ function postRecipe(name, instructions) {
   recipeFormCont.style.display = 'none'
   bigResultsContainer.style.display = 'none'
   resultsContainer.innerHTML= ""
+  itemContainer.innerHTML = ""
   allRecipes.push(recipe)
 }
 
@@ -222,15 +225,16 @@ function renderRecipe(recipe) {
     let ingCont = document.createElement('div')
     ingCont.className = 'ing-cont'
     recipe.rec_ings.forEach((ing) => {
-        let ingLine = document.createElement('span')
+        let ingLine = document.createElement('div')
         ingLine.className = 'ing-line'
-          let ingAmt = document.createElement('p')
+          let ingAmt = document.createElement('li')
           ingAmt.className = "ingredient-amount"
           ingAmt.textContent = ing.amount
           ingLine.appendChild(ingAmt)
 
           let ingName = document.createElement('p')
-          ingName.textContent = ing.ingredient.name
+          ingName.textContent = (ing.ingredient.name).split(",").shift().toLowerCase().replace(/\b\w/g, l => l.toUpperCase())
+          ingName.className = "ingredient-title"
           ingLine.appendChild(ingName)
         ingCont.appendChild(ingLine)
     })
@@ -243,10 +247,11 @@ function renderRecipe(recipe) {
 
     let recipeIns = document.createElement('p')
     recipeIns.textContent = recipe.instructions
+    recipeIns.className = 'recipe-directions'
     element.appendChild(recipeIns)
 
     let btnCont = document.createElement('div')
-    btnCont.style.alignSelf = 'flex-end'
+    btnCont.className = 'recipe-btn-container'
       let delbtn = document.createElement('button')
       delbtn.className = 'delete-btn'
       delbtn.textContent = "Delete"
@@ -254,8 +259,8 @@ function renderRecipe(recipe) {
       btnCont.appendChild(delbtn)
     element.appendChild(btnCont)
     let convBtn = document.createElement('button')
-    convBtn.textContent = 'Convert units'
-    convBtn.className = 'delete-btn'
+    convBtn.textContent = 'Convert Units'
+    convBtn.className = 'convert-btn'
     convBtn.addEventListener('click', () => {convertUnits(recipe)})
     btnCont.appendChild(convBtn)
   recipeContainer.appendChild(element)
@@ -288,7 +293,7 @@ function deleteRecipe(recipe) {
           //use conv to get to target units
           let newUnit = (amt_value/parseInt(gPerUnit)).toFixed(2)
           event.target.parentElement.parentElement.querySelectorAll('.ingredient-amount').item(i).textContent = `${newUnit} ${targetUnit}`
-        } else if (amt_unit === targetUnit) {
+        } else if (amt_unit.toLowerCase() === targetUnit.toLowerCase()) {
           let newUnit = amt_value * parseInt(gPerUnit)
           event.target.parentElement.parentElement.querySelectorAll('.ingredient-amount').item(i).textContent = `${newUnit} g`
         } else if (units.indexOf(amt_unit) > -1 && units.indexOf(targetUnit) > -1) {

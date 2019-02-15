@@ -66,7 +66,7 @@
   .input-text {
     border-radius: 2px;
     height: 2rem;
-    width: 60%;
+    width: 75%;
     font-size: 18px;
     font-family: 'Montserrat', sans-serif; 
     margin: 3px;
@@ -84,7 +84,7 @@
   #recipe-instructions {
     border-radius: 2px;
     height: 10rem;
-    width: 60%;
+    width: 75%;
     font-size: 18px;
     font-family: 'Montserrat', sans-serif; 
     margin: 3px;
@@ -138,7 +138,7 @@
   .card {
     text-align: left;
     padding: 1rem;
-    width: 45%;
+    min-width: 45%;
     min-height: 30rem;
     display: flex;
     flex-direction: column;
@@ -147,7 +147,7 @@
     border-radius: 5px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     font-family: 'Montserrat', sans-serif; 
-    font-size: 15px;
+    font-size: 16px;
     line-height: 1.5;
   } 
 
@@ -195,6 +195,10 @@
   display: flex;
 } 
 
+.ingredient-amount {
+  min-width: 5.5rem
+}
+
 #recipe-search-form {
   width: 500px;
   margin: auto;
@@ -217,4 +221,27 @@
 .single-item {
   padding-left: 1rem;
   padding-right: 1rem;
+}
+
+.recipe-btn-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: auto;
+  margin-left: auto;
+}
+
+.convert-btn {
+  font-size: 18px;
+  margin-left: 1rem;
+} 
+
+.delete-btn {
+  font-size: 18px;
+} 
+
+#submit-button {
+  border: 5px solid #efc2e1;
+  height: 3rem;
+  font-size: 24px;
+  margin-top: 1rem;
 }
