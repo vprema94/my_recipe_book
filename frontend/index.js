@@ -106,7 +106,6 @@ function addSearchHandler() {
     // recipeContainer.innerHTML = ''
     searchTerm = event.target.value
     const re = new RegExp(searchTerm, 'i', '^[ ,-]')
-    console.log(re)
     const results = allRecipes.filter((p) => {
       return re.test(p.name)
     })
@@ -121,7 +120,8 @@ function addSearchHandler() {
 function ingredientSearch(ingredient) {
   event.preventDefault()
   const ING_SEARCH_URL = `https://api.nal.usda.gov/ndb/search/?format=json&q=${ingredient}&sort=r&offset=0&api_key=${API_KEY}`
-  fetch(ING_SEARCH_URL).then(res => res.json()).then(data => renderResults(data.list.item))
+  fetch(ING_SEARCH_URL).then(res => res.json()).then(data => {renderResults(data.list.item) 
+  })
 }
 
 function renderResults(results) {
@@ -148,6 +148,7 @@ function renderResults(results) {
 }
 
 function renderItem(item) {
+  console.log(item)
   resultsContainer.innerHTML= ""
   let singleItem = document.createElement('li')
   singleItem.className = 'single-item'
@@ -299,7 +300,7 @@ function deleteRecipe(recipe) {
         } else if (amt_unit.toLowerCase() === targetUnit.toLowerCase()) {
           let newUnit = amt_value * parseInt(gPerUnit)
           event.target.parentElement.parentElement.querySelectorAll('.ingredient-amount').item(i).textContent = `${newUnit} g`
-        } else if (units.indexOf(amt_unit) > -1 && units.indexOf(targetUnit) > -1) {
+        } else if (units.indexOf(amt_unit.toLowerCase()) > -1 && units.indexOf(targetUnit.toLowerCase()) > -1) {
           let newUnit = amt_value * unitConv[amt_unit][targetUnit]
           event.target.parentElement.parentElement.querySelectorAll('.ingredient-amount').item(i).textContent = `${newUnit} g`
         }
@@ -307,5 +308,3 @@ function deleteRecipe(recipe) {
       i++
     })
   }
-    // debugger
-    // console.log(recipe)
