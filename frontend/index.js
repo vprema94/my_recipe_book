@@ -123,19 +123,24 @@ function ingredientSearch(ingredient) {
 
 function renderResults(results) {
   resultsContainer.innerHTML = ""
+  
   results.forEach(item => {
-    let spanBtn = document.createElement('div')
-    spanBtn.className = 'span-btn'
-      let ingBtn = document.createElement('button')
-      ingBtn.className = 'search-result-btn'
-      ingBtn.textContent = "Add to Recipe"
-      ingBtn.addEventListener('click', () => renderItem(item))
-      spanBtn.appendChild(ingBtn)
-      let searchResult = document.createElement('p')
-      searchResult.className = 'search-result'
-      searchResult.textContent = (item.name).split(",").shift().toLowerCase().replace(/\b\w/g, l => l.toUpperCase())
-      spanBtn.appendChild(searchResult)
-    resultsContainer.appendChild(spanBtn)
+    let niceLook = (item.name).split(",").shift().toLowerCase().replace(/\b\w/g, l => l.toUpperCase()).toLowerCase()
+    let myTest = document.querySelector('#ingredient').value.toLowerCase()
+    if (niceLook.includes(myTest)) {
+      let spanBtn = document.createElement('div')
+      spanBtn.className = 'span-btn'
+        let ingBtn = document.createElement('button')
+        ingBtn.className = 'search-result-btn'
+        ingBtn.textContent = "Add to Recipe"
+        ingBtn.addEventListener('click', () => renderItem(item))
+        spanBtn.appendChild(ingBtn)
+        let searchResult = document.createElement('p')
+        searchResult.className = 'search-result'
+        searchResult.textContent = (item.name).split(",").shift().toLowerCase().replace(/\b\w/g, l => l.toUpperCase())
+        spanBtn.appendChild(searchResult)
+      resultsContainer.appendChild(spanBtn)
+    }
   })
 }
 
