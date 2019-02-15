@@ -245,10 +245,13 @@ function renderRecipe(recipe) {
     title1.className = 'titlez'
     element.appendChild(title1)
 
-    let recipeIns = document.createElement('p')
-    recipeIns.textContent = recipe.instructions
-    recipeIns.className = 'recipe-directions'
-    element.appendChild(recipeIns)
+    let rawRecipeIns = recipe.instructions.split(',')
+    rawRecipeIns.forEach((line) => {
+      let recipeIns = document.createElement('p')
+      recipeIns.textContent = line
+      recipeIns.className = 'recipe-directions'
+      element.appendChild(recipeIns)
+    })
 
     let btnCont = document.createElement('div')
     btnCont.className = 'recipe-btn-container'
